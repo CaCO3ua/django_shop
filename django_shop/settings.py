@@ -10,20 +10,28 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import ConfigParser
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+config = ConfigParser.ConfigParser()
+config.read(os.path.join(app.root_path, '../settings.ini')
 
+DATABASE_USER = config.get('database', 'DATABASE_USER')
+DATABASE_PASSWORD = config.get('database', 'DATABASE_PASSWORD')
+DATABASE_ENGINE = config.get('database', 'DATABASE_ENGINE')
+DATABASE_NAME = config.get('database', 'DATABASE_NAME')
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
+SECRET_KEY = config.get('secrets','SECRET_KEY')
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '10bot^@*^yq7^u3y$jc$=h7@eb-y%7o=x(rd&#(kbgi7$*%o!a'
+DEBUG = config.getboolean('debug','DEBUG')
+TEMPLATE_DEBUG = config.getboolean('debug','TEMPLATE_DEBUG')
+VIEW_TEST = config.getboolean('debug', 'VIEW_TEST')
+INTERNAL_IPS = tuple(config.get('debug', 'INTERNAL_IPS').split())
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+MEDIA_URL = config.get('paths', 'MEDIA_URL')
+MEDIA_ROOT = config.get( 'paths', 'MEDIA_ROOT' )
+STATIC_URL = config.get( 'paths', 'STATIC_URL' )
+
 
 ALLOWED_HOSTS = []
 
@@ -73,17 +81,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'django_shop.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
-
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
 
@@ -97,12 +94,3 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
-
-STATIC_URL = '/static/'
-
-MEDIA_URL = '/media/'
-
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
